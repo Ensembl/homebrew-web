@@ -11,6 +11,7 @@ class ModPerl < Formula
   def install
     httpd = Formula['ensembl/web/httpd24']
     apr = Formula['apr']
+    inreplace 'src/modules/perl/modperl_common_util.h', '#define MP_INLINE APR_INLINE', '#define MP_INLINE'
     system 'perl', 'Makefile.PL', "MP_APXS=#{httpd.bin}/apxs", "MP_APR_CONFIG=#{apr.bin}/bin/apr-1-config"
     system 'make'
     libexec.install 'src/modules/perl/mod_perl.so'
