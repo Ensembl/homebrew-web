@@ -33,7 +33,7 @@ class ModPerl < Formula
     end
     contents = File.new(httpd_conf).read
     if contents !~ /mod_perl\.so/ then
-      inreplace httpd_conf, "#LoadModule rewrite_module libexec/mod_rewrite.so", "#LoadModule rewrite_module libexec/mod_rewrite.so\nLoadModule perl_module libexec/mod_perl.so"
+      inreplace httpd_conf, "LoadModule rewrite_module libexec/mod_rewrite.so", "LoadModule rewrite_module libexec/mod_rewrite.so\nLoadModule perl_module libexec/mod_perl.so"
     end
   end
 
