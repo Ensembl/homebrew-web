@@ -19,7 +19,7 @@ class ModPerl < Formula
 
     httpd_conf = "#{etc}/apache2/2.4/httpd.conf"
     contents = File.new(httpd_conf).read
-    if text !~ /mod_perl\.so/ then
+    if contents !~ /mod_perl\.so/ then
       inreplace httpd_conf, "#LoadModule rewrite_module libexec/mod_rewrite.so", "#LoadModule rewrite_module libexec/mod_rewrite.so\nLoadModule perl_module libexec/mod_perl.so"
     end
   end
