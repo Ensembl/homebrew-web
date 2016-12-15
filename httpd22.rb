@@ -17,7 +17,7 @@ class Httpd22 < Formula
   depends_on "apr-util"
   depends_on "openssl"
   depends_on "pcre" => :optional
-  depends_on "homebrew/dupes/zlib"
+  depends_on "zlib"
 
   if build.with?("mpm-worker") && build.with?("mpm-event")
     raise "Cannot build with both worker and event MPMs, choose one"
