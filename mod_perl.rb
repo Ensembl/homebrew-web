@@ -5,11 +5,11 @@ class ModPerl < Formula
   url 'http://www-eu.apache.org/dist/perl/mod_perl-2.0.10.tar.gz'
   sha256 'd1cf83ed4ea3a9dfceaa6d9662ff645177090749881093051020bf42f9872b64'
 
-  option "with-httpd22", "Use Apache2.2 to bind against"
-  if build.with?("httpd22")
-    depends_on 'ensembl/web/httpd22'
-  else
+  option "with-httpd24", "Use Apache2.2 to bind against"
+  if build.with?("httpd24")
     depends_on 'ensembl/web/httpd24'
+  else
+    depends_on 'ensembl/web/httpd22'
   end
   depends_on 'apr'
 
@@ -26,10 +26,10 @@ class ModPerl < Formula
     libexec.install 'src/modules/perl/mod_perl.so'
     httpd.libexec.install_symlink (libexec+'mod_perl.so')
 
-    if build.with?("httpd22")
-      httpd_conf = "#{etc}/apache2/2.2/httpd.conf"
-    else
+    if build.with?("httpd24")
       httpd_conf = "#{etc}/apache2/2.4/httpd.conf"
+    else
+      httpd_conf = "#{etc}/apache2/2.2/httpd.conf"
     end
     contents = File.new(httpd_conf).read
     if contents !~ /mod_perl\.so/ then
