@@ -25,6 +25,8 @@ class ModPerl < Formula
     system 'make'
     libexec.install 'src/modules/perl/mod_perl.so'
     httpd.libexec.install_symlink (libexec+'mod_perl.so')
+    system 'make', 'test'
+    system 'make', 'install'
 
     if build.with?("httpd24")
       httpd_conf = "#{etc}/apache2/2.4/httpd.conf"
