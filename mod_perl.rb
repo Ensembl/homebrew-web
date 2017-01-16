@@ -14,10 +14,10 @@ class ModPerl < Formula
   depends_on 'apr'
 
   def install
-    if build.with?("httpd22")
-      httpd = Formula['ensembl/web/httpd22']
-    else
+    if build.with?("httpd24")
       httpd = Formula['ensembl/web/httpd24']
+    else
+      httpd = Formula['ensembl/web/httpd22']
     end
     apr = Formula['apr']
     inreplace 'src/modules/perl/modperl_common_util.h', '#define MP_INLINE APR_INLINE', '#define MP_INLINE'
