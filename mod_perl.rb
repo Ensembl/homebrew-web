@@ -21,7 +21,7 @@ class ModPerl < Formula
     end
     apr = Formula['apr']
     inreplace 'src/modules/perl/modperl_common_util.h', '#define MP_INLINE APR_INLINE', '#define MP_INLINE'
-    system 'perl', 'Makefile.PL', "MP_APXS=#{httpd.bin}/apxs", "MP_APR_CONFIG=#{apr.bin}/bin/apr-1-config"
+    system 'perl', 'Makefile.PL', "MP_APXS=#{httpd.bin}/apxs", "MP_APR_CONFIG=#{apr.bin}/apr-1-config"
     system 'make'
     libexec.install 'src/modules/perl/mod_perl.so'
     httpd.libexec.install_symlink (libexec+'mod_perl.so')
