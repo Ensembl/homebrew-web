@@ -23,8 +23,16 @@ class ModPerl < Formula
     inreplace 'src/modules/perl/modperl_common_util.h', '#define MP_INLINE APR_INLINE', '#define MP_INLINE'
     system 'perl', 'Makefile.PL', "MP_APXS=#{httpd.bin}/apxs", "MP_APR_CONFIG=#{apr.bin}/apr-1-config"
     system 'make'
+    
+    # Install .so into libexec and symlink into apache
     libexec.install 'src/modules/perl/mod_perl.so'
-    httpd.libexec.install_symlink (libexec+'mod_perl.so')
+    source_so = Pathname.new libexec+'mod_perl.so'
+    target_so = Pathname.new httpd.libexec+'mod_perl.so'
+    if target_so.exist?
+      target_so.unlink
+    end
+    httpd.libexec.install_symlink source_so
+    # Finish installing modperl's Perl libs
     system 'make', 'install'
 
     if build.with?("httpd24")
