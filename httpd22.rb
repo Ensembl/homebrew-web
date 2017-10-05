@@ -45,8 +45,8 @@ class Httpd22 < Formula
       --enable-cgid
       --enable-suexec
       --enable-rewrite
-      --with-apr=#{Formula["ensmebl/web/apr"].opt_prefix}
-      --with-apr-util=#{Formula["ensmebl/web/apr-util"].opt_prefix}
+      --with-apr=#{Formula["ensembl/web/apr"].opt_prefix}
+      --with-apr-util=#{Formula["ensembl/web/apr-util"].opt_prefix}
       --with-ssl=#{Formula["openssl"].opt_prefix}
       --with-z=#{Formula["zlib"].opt_prefix}
     ]
