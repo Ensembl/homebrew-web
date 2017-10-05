@@ -30,7 +30,7 @@ class ModPerl < Formula
     
     # Install .so into libexec and symlink back into apache to avoid empty installation
     libexec.install mod_perl_so
-    httpd_formula.libexec.install_symlink source_so
+    httpd_formula.libexec.install_symlink mod_perl_so
   end
 
   def install
