@@ -11,7 +11,7 @@ class ModPerl < Formula
   else
     depends_on 'ensembl/web/httpd22'
   end
-  depends_on 'apr'
+  depends_on 'ensembl/web/apr'
 
   def install
     if build.with?("httpd24")
@@ -19,7 +19,7 @@ class ModPerl < Formula
     else
       httpd = Formula['ensembl/web/httpd22']
     end
-    apr = Formula['apr']
+    apr = Formula['ensembl/web/apr']
     inreplace 'src/modules/perl/modperl_common_util.h', '#define MP_INLINE APR_INLINE', '#define MP_INLINE'
     system 'perl', 'Makefile.PL', "MP_APXS=#{httpd.bin}/apxs", "MP_APR_CONFIG=#{apr.bin}/apr-1-config"
     system 'make'
