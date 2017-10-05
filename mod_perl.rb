@@ -31,7 +31,7 @@ class ModPerl < Formula
     if target_so.exist?
       target_so.unlink
     end
-    httpd.libexec.install_symlink source_so
+    #httpd.libexec.install_symlink source_so
     # Finish installing modperl's Perl libs
     system 'make', 'install'
 
