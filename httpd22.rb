@@ -16,7 +16,6 @@ class Httpd22 < Formula
 
   depends_on "ensembl/web/apr-util"
   depends_on "openssl"
-  depends_on "ensembl/web/apr"
   depends_on "pcre" => :optional
   depends_on "zlib"
 
@@ -46,8 +45,8 @@ class Httpd22 < Formula
       --enable-cgid
       --enable-suexec
       --enable-rewrite
-      --with-apr=#{Formula["apr"].opt_prefix}
-      --with-apr-util=#{Formula["apr-util"].opt_prefix}
+      --with-apr=#{Formula["ensmebl/web/apr"].opt_prefix}
+      --with-apr-util=#{Formula["ensmebl/web/apr-util"].opt_prefix}
       --with-ssl=#{Formula["openssl"].opt_prefix}
       --with-z=#{Formula["zlib"].opt_prefix}
     ]
