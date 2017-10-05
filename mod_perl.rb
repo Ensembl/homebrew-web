@@ -17,19 +17,19 @@ class ModPerl < Formula
   def run_install(perl_cmd, httpd_formula, apr_formula)
     system perl_cmd, 'Makefile.PL', "MP_APXS=#{httpd_formula.bin}/apxs", "MP_APR_CONFIG=#{apr_formula.bin}/apr-1-config"
 
-    mod_perl_so = httpd_formula.libexec/'mod_perl.so'
-    target_so = httpd_formula.libexec/'mod_perl.so'
+    mod_perl_so = libexec/'mod_perl.so'
+    httpd_mod_perl_so = httpd_formula.libexec/'mod_perl.so'
     
     # If mod_perl.so already exists in httpd remove it
-    if mod_perl_so.exist?
-      ohai "Removing pre-existing mod_perl.so from #{mod_perl_so}"
-      mod_perl_so.unlink
+    if httpd_mod_perl_so.exist?
+      ohai "Removing pre-existing mod_perl.so from #{httpd_mod_perl_so}"
+      httpd_mod_perl_so.unlink
     end
     system 'make'
     system 'make', 'install'
     
     # Install .so into libexec and symlink back into apache to avoid empty installation
-    libexec.install mod_perl_so
+    libexec.install httpd_mod_perl_so
     httpd_formula.libexec.install_symlink mod_perl_so
   end
 
