@@ -16,6 +16,7 @@ class Httpd22 < Formula
 
   depends_on "apr-util"
   depends_on "openssl"
+  depends_on "ensembl/web/apr"
   depends_on "pcre" => :optional
   depends_on "zlib"
 
