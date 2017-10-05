@@ -14,7 +14,7 @@ class Httpd22 < Formula
   option "with-mpm-event", "Use the Event Multi-Processing Module instead of Prefork"
   option "with-privileged-ports", "Use the default ports 80 and 443 (which require root privileges), instead of 8080 and 8443"
 
-  depends_on "apr-util"
+  depends_on "ensembl/web/apr-util"
   depends_on "openssl"
   depends_on "ensembl/web/apr"
   depends_on "pcre" => :optional

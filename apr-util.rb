@@ -15,7 +15,7 @@ class AprUtil < Formula
 
   keg_only :provided_by_osx, "Apple's CLT package contains apr"
 
-  depends_on "apr"
+  depends_on "ensembl/web/apr"
   depends_on "openssl"
   depends_on "mawk"
   depends_on "postgresql" => :optional

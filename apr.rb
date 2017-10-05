@@ -17,7 +17,6 @@ class Apr < Formula
   keg_only :provided_by_osx, "Apple's CLT package contains apr"
 
   depends_on "util-linux" => :recommended if OS.linux? # for libuuid
-  depends_on "ensembl/web/apr-util"
 
   def install
     ENV["SED"] = "sed" # prevent libtool from hardcoding sed path from superenv
