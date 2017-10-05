@@ -13,8 +13,11 @@ class ModPerl < Formula
   end
   depends_on 'ensembl/web/apr'
   
+  # You can only install to 1 version of Perl because mod_perl.so is compiled to link against one libperl.so
   def run_install(perl_cmd, httpd_formula, apr_formula)
     system perl_cmd, 'Makefile.PL', "MP_APXS=#{httpd_formula.bin}/apxs", "MP_APR_CONFIG=#{apr_formula.bin}/apr-1-config"
+
+    # If this already exists in httpd remove it
     mod_perl_so = httpd_formula.libexec/'mod_perl.so'
     if mod_perl_so.exist?
       ohai "Removing pre-existing mod_perl.so from #{mod_perl_so}"
@@ -22,16 +25,15 @@ class ModPerl < Formula
     end
     system 'make'
     # Install .so into libexec and symlink into apache
-#     libexec.install 'src/modules/perl/mod_perl.so'
-#     source_so = Pathname.new libexec+'mod_perl.so'
-#     target_so = Pathname.new httpd.libexec+'mod_perl.so'
-#     if target_so.exist?
-#       target_so.unlink
-#     end
-#     httpd.libexec.install_symlink source_so
+    libexec.install 'src/modules/perl/mod_perl.so'
+    source_so = Pathname.new libexec+'mod_perl.so'
+    target_so = Pathname.new httpd.libexec+'mod_perl.so'
+    if target_so.exist?
+      target_so.unlink
+    end
+    httpd.libexec.install_symlink source_so
     # Finish installing modperl's Perl libs
     system 'make', 'install'
-    system 'make', 'clean'
   end
 
   def install
@@ -44,8 +46,6 @@ class ModPerl < Formula
     inreplace 'src/modules/perl/modperl_common_util.h', '#define MP_INLINE APR_INLINE', '#define MP_INLINE'
     
     if ENV.has_key?('PLENV_ROOT')
-      %x{#{ENV['PLENV_ROOT']}/bin/plenv versions --bare}.chomp.split.each do | ver |
-        ENV['PLENV_VERSION'] = ver
         perl_cmd = %x{#{ENV['PLENV_ROOT']}/bin/plenv which perl}.chomp
         run_install(perl_cmd, httpd, apr)
       end
