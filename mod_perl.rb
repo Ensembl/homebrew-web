@@ -12,6 +12,27 @@ class ModPerl < Formula
     depends_on 'ensembl/web/httpd22'
   end
   depends_on 'ensembl/web/apr'
+  
+  def run_install(perl_cmd, httpd_formula, apr_formula)
+    system perl_cmd, 'Makefile.PL', "MP_APXS=#{httpd_formula.bin}/apxs", "MP_APR_CONFIG=#{apr_formula.bin}/apr-1-config"
+    mod_perl_so = httpd_formula.libexec/'mod_perl.so'
+    if mod_perl_so.exist?
+      ohai "Removing pre-existing mod_perl.so from #{mod_perl_so}"
+      mod_perl_so.unlink
+    end
+    system 'make'
+    # Install .so into libexec and symlink into apache
+#     libexec.install 'src/modules/perl/mod_perl.so'
+#     source_so = Pathname.new libexec+'mod_perl.so'
+#     target_so = Pathname.new httpd.libexec+'mod_perl.so'
+#     if target_so.exist?
+#       target_so.unlink
+#     end
+#     httpd.libexec.install_symlink source_so
+    # Finish installing modperl's Perl libs
+    system 'make', 'install'
+    system 'make', 'clean'
+  end
 
   def install
     if build.with?("httpd24")
@@ -21,19 +42,16 @@ class ModPerl < Formula
     end
     apr = Formula['ensembl/web/apr']
     inreplace 'src/modules/perl/modperl_common_util.h', '#define MP_INLINE APR_INLINE', '#define MP_INLINE'
-    system 'perl', 'Makefile.PL', "MP_APXS=#{httpd.bin}/apxs", "MP_APR_CONFIG=#{apr.bin}/apr-1-config"
-    system 'make'
     
-    # Install .so into libexec and symlink into apache
-    libexec.install 'src/modules/perl/mod_perl.so'
-    source_so = Pathname.new libexec+'mod_perl.so'
-    target_so = Pathname.new httpd.libexec+'mod_perl.so'
-    if target_so.exist?
-      target_so.unlink
+    if ENV.has_key?('PLENV_ROOT')
+      %x{#{ENV['PLENV_ROOT']}/bin/plenv versions --bare}.chomp.split.each do | ver |
+        ENV['PLENV_VERSION'] = ver
+        perl_cmd = %x{#{ENV['PLENV_ROOT']}/bin/plenv which perl}.chomp
+        run_install(perl_cmd, httpd, apr)
+      end
+    else
+      run_install('/usr/bin/perl', httpd, apr)
     end
-    #httpd.libexec.install_symlink source_so
-    # Finish installing modperl's Perl libs
-    system 'make', 'install'
 
     if build.with?("httpd24")
       httpd_conf = "#{etc}/apache2/2.4/httpd.conf"
