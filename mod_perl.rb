@@ -5,7 +5,12 @@ class ModPerl < Formula
   url 'http://www-eu.apache.org/dist/perl/mod_perl-2.0.10.tar.gz'
   sha256 'd1cf83ed4ea3a9dfceaa6d9662ff645177090749881093051020bf42f9872b64'
 
-  option "with-httpd24", "Use Apache2.2 to bind against"
+  option "with-httpd24", "Use Apache httpd 2.4 to bind against"
+  
+  if ! ENV.has_key?('PLENV_ROOT')
+    depends_on 'perl'
+  end
+  
   if build.with?("httpd24")
     depends_on 'ensembl/web/httpd24'
   else
@@ -46,7 +51,8 @@ class ModPerl < Formula
       perl_cmd = %x{#{ENV['PLENV_ROOT']}/bin/plenv which perl}.chomp
       run_install(perl_cmd, httpd, apr)
     else
-      run_install('/usr/bin/perl', httpd, apr)
+      perl_formula = Formula['perl']
+      run_install(perl_formula.bin/'perl', httpd, apr)
     end
 
     if build.with?("httpd24")
