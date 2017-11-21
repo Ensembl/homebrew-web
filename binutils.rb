@@ -37,8 +37,8 @@ class Binutils < Formula
     # Reduce the size of the bottle.
     system "strip", *Dir[bin/"*", lib/"*.a"] unless OS.mac?
   end
-end
   test do
     size = build.with?("default-names") ? "size" : "gsize"
     assert_match "text", shell_output("#{bin}/#{size} #{bin}/#{size}")
   end
+end
