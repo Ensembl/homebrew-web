@@ -10,7 +10,7 @@ class Glibc < Formula
     mkdir "build" do 
       system "../configure", "--prefix=#{prefix}",
                             "--infodir=#{info}",
-                            "--mandir=#{man}","--x=x",
+                            "--mandir=#{man}",
                             "--with-headers=/nfs/public/release/ensweb-software/sharedsw/bootstrap/include"
       system "make"
       system "patchelf", "--remove-rpath", "elf/ld-linux-x86-64.so.2"
