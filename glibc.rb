@@ -7,6 +7,7 @@ class Glibc < Formula
     ENV["CC"] = 'gcc'
     ENV["CXX"] = 'g++'
     ENV.prepend_path "PATH","#{HOMEBREW_PREFIX}/../../bootstrap/bin"
+    rm File.join(HOMEBREW_PREFIX,'/include/scsi'), :force => true
     mkdir "build" do
       system "../configure", "--prefix=#{HOMEBREW_PREFIX}",
                             "--infodir=#{info}",
