@@ -6,12 +6,12 @@ class Glibc < Formula
   def install
     ENV["CC"] = 'gcc'
     ENV["CXX"] = 'g++'
-    ENV.prepend_path "PATH","/nfs/public/release/ensweb-software/sharedsw/bootstrap/bin"
-    mkdir "build" do 
-      system "../configure", "--prefix=#{prefix}",
+    ENV.prepend_path "PATH","#{HOMEBREW_PREFIX}/../../bootstrap/bin"
+    mkdir "build" do
+      system "../configure", "--prefix=#{HOMEBREW_PREFIX}",
                             "--infodir=#{info}",
                             "--mandir=#{man}",
-                            "--with-headers=/nfs/public/release/ensweb-software/sharedsw/bootstrap/include"
+                            "--with-headers=#{HOMEBREW_PREFIX}/include"
       system "make"
       system "patchelf", "--remove-rpath", "elf/ld-linux-x86-64.so.2"
       system "make", "install"
