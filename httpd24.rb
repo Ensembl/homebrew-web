@@ -112,7 +112,7 @@ class Httpd24 < Formula
   end
 
   def httpd_layout
-    <<-EOS.undent
+    <<-EOS
 
       <Layout Homebrew>
           prefix:        #{prefix}

@@ -82,7 +82,7 @@ class Httpd22 < Formula
   end
 
   def httpd_layout
-    <<-EOS.undent
+    <<-EOS
       <Layout Homebrew>
           prefix:        #{prefix}
           exec_prefix:   ${prefix}
