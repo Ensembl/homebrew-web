@@ -7,7 +7,7 @@ class ModPerl < Formula
 
   option "with-httpd24", "Use Apache httpd 2.4 to bind against"
   
-  if ! ENV.has_key?('PLENV_ROOT')
+  if ! ENV.has_key?('HOMEBREW_PLENV_ROOT')
     depends_on 'perl'
   end
   
@@ -47,8 +47,8 @@ class ModPerl < Formula
     apr = Formula['ensembl/web/apr']
     inreplace 'src/modules/perl/modperl_common_util.h', '#define MP_INLINE APR_INLINE', '#define MP_INLINE'
     
-    if ENV.has_key?('PLENV_ROOT')
-      perl_cmd = %x{#{ENV['PLENV_ROOT']}/bin/plenv which perl}.chomp
+    if ENV.has_key?('HOMEBREW_PLENV_ROOT')
+      perl_cmd = %x{#{ENV['HOMEBREW_PLENV_ROOT']}/bin/plenv which perl}.chomp
       run_install(perl_cmd, httpd, apr)
     else
       perl_formula = Formula['perl']
