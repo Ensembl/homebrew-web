@@ -48,6 +48,7 @@ class ModPerl < Formula
     inreplace 'src/modules/perl/modperl_common_util.h', '#define MP_INLINE APR_INLINE', '#define MP_INLINE'
     
     if ENV.has_key?('HOMEBREW_PLENV_ROOT')
+      ENV['PLENV_ROOT'] = ENV['HOMEBREW_PLENV_ROOT']
       perl_cmd = %x{#{ENV['HOMEBREW_PLENV_ROOT']}/bin/plenv which perl}.chomp
       run_install(perl_cmd, httpd, apr)
     else
