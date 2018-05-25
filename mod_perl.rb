@@ -36,6 +36,11 @@ class ModPerl < Formula
     # Install .so into libexec and symlink back into apache to avoid empty installation
     libexec.install httpd_mod_perl_so
     httpd_mod_perl_so.make_symlink mod_perl_so.realpath
+
+    # Fix path to use current Perl
+    current_rpath=$(patchelf --print-rpath httpd_mod_perl_so)
+    new_rpath=%x{perl -e 'print join "\n", @INC;' | grep "ld" | grep -v "site_perl"}/'CORE/:${current_rpath}'
+    patchelf --set-rpath $new_rpath httpd_mod_perl_so
   end
 
   def install
