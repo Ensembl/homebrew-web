@@ -26,8 +26,8 @@ class ModPerl < Formula
     httpd_mod_perl_so = httpd_formula.libexec/'mod_perl.so'
     
     # If mod_perl.so already exists in httpd remove it
-    if httpd_mod_perl_so.exist?
-      ohai "Removing pre-existing mod_perl.so from #{httpd_mod_perl_so}"
+    if File.symlink?(httpd_mod_perl_so)
+      puts "Removing pre-existing mod_perl.so from #{httpd_mod_perl_so}"
       httpd_mod_perl_so.unlink
     end
     system 'make'
@@ -37,10 +37,13 @@ class ModPerl < Formula
     libexec.install httpd_mod_perl_so
     httpd_mod_perl_so.make_symlink mod_perl_so.realpath
 
-    # Fix path to use current Perl
-    current_rpath=$(patchelf --print-rpath httpd_mod_perl_so)
-    new_rpath=%x{perl -e 'print join "\n", @INC;' | grep "ld" | grep -v "site_perl"}/'CORE/:${current_rpath}'
-    patchelf --set-rpath $new_rpath httpd_mod_perl_so
+    # Fix path to use current Perl in plenv instead of linuxbrew
+    patchelf = Formula["patchelf"]
+    return unless patchelf.installed?
+    current_rpath = `#{patchelf.bin}/patchelf --print-rpath #{httpd_mod_perl_so}`
+    perl_current_libs = `#{perl_cmd} -e 'print join "\n", @INC;' | grep "ld" | grep -v "site_perl"`
+    new_rpath = perl_current_libs.chomp+'/CORE/:'+current_rpath.chomp
+    system "#{patchelf.bin}/patchelf --set-rpath #{new_rpath} #{httpd_mod_perl_so}"
   end
 
   def install
