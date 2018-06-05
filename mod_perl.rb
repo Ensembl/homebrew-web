@@ -2,7 +2,7 @@ class ModPerl < Formula
 
   desc 'Apache Perl mod'
   homepage 'https://perl.apache.org/'
-  url 'http://www-eu.apache.org/dist/perl/mod_perl-2.0.10.tar.gz'
+  url 'http://www.apache.org/dist/perl/mod_perl-2.0.10.tar.gz'
   sha256 'd1cf83ed4ea3a9dfceaa6d9662ff645177090749881093051020bf42f9872b64'
 
   option "with-httpd24", "Use Apache httpd 2.4 to bind against"
