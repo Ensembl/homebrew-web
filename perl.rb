@@ -84,19 +84,6 @@ class Perl < Formula
     end
   end
 
-  def post_install
-    # CPAN modules installed via the system package manager will not be visible to
-    # brewed Perl. As a temporary measure, install critical CPAN modules to ensure
-    # they are available. See https://github.com/Linuxbrew/homebrew-core/pull/1064
-    unless OS.mac?
-      ENV.with_build_environment do
-        ENV["PERL_MM_USE_DEFAULT"] = "1"
-        system bin/"cpan", "-i", "XML::Parser"
-        system bin/"cpan", "-i", "XML::SAX"
-      end
-    end
-  end
-
   def caveats; <<~EOS
     By default non-brewed cpan modules are installed to the Cellar. If you wish
     for your modules to persist across updates we recommend using `local::lib`.
