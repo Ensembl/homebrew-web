@@ -16,6 +16,9 @@ class Graphviz < Formula
     sha256 "4713489ba984e5f76ee886ba0c1d0c891945516fe42159dc05787ab705165127" => :x86_64_linux # glibc 2.19
   end
 
+patch :p1, :DATA
+
+
   head do
     url "https://github.com/ellson/graphviz.git"
 
@@ -114,3 +117,16 @@ class Graphviz < Formula
     system "#{bin}/dot", "-Tpng", "-o", "sample.png", "sample.dot"
   end
 end
+__END__
+diff --git a/lib/vmalloc/features/vmalloc b/lib/vmalloc/features/vmalloc
+index 10d62a8..aba7b51 100644
+--- a/lib/vmalloc/features/vmalloc
++++ b/lib/vmalloc/features/vmalloc
+@@ -13,7 +13,6 @@ typ ssize_t
+ hdr malloc
+ lib mallopt
+ lib mallinfo
+-lib mstats
+ hdr dlfcn
+
+ std    malloc note{ stuck with standard malloc }end noexecute{
