@@ -1,0 +1,9 @@
+1. Download the latest jkweb source from UCSC
+2. Patch with main.patch and build.patch.
+3. If the patch succeeds with offsets, generate a new one and recommit it.
+4. make in src/lib
+5. Download Bio::DB::BigFile source.
+6. Apply perl.patch.
+7. Set KENT_SRC to the location of your built kent checkout.
+8. Build and install to /localsw with --install_base set.
+ 
