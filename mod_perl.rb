@@ -8,7 +8,7 @@ class ModPerl < Formula
   option "with-httpd24", "Use Apache httpd 2.4 to bind against"
   
   if ! ENV.has_key?('HOMEBREW_PLENV_ROOT')
-    depends_on 'ensembl/web/perl'
+    depends_on 'perl'
   end
   
   if build.with?("httpd24")
@@ -60,7 +60,7 @@ class ModPerl < Formula
       perl_cmd = %x{#{ENV['HOMEBREW_PLENV_ROOT']}/bin/plenv which perl}.chomp
       run_install(perl_cmd, httpd, apr)
     else
-      perl_formula = Formula['ensembl/web/perl']
+      perl_formula = Formula['perl']
       run_install(perl_formula.bin/'perl', httpd, apr)
     end
 
