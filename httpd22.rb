@@ -15,7 +15,7 @@ class Httpd22 < Formula
   option "with-privileged-ports", "Use the default ports 80 and 443 (which require root privileges), instead of 8080 and 8443"
 
   depends_on "ensembl/web/apr-util"
-  depends_on "openssl"
+  depends_on "ensembl/web/openssl"
   depends_on "pcre" => :optional
   depends_on "zlib"
 
