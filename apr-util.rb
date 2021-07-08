@@ -33,7 +33,18 @@ class AprUtil < Formula
     args << "--with-pgsql=#{Formula["postgresql"].opt_prefix}" if build.with? "postgresql"
     args << "--with-mysql=#{Formula["mysql"].opt_prefix}" if build.with? "mysql"
     args << "--with-freetds=#{Formula["freetds"].opt_prefix}" if build.with? "freetds"
-    args << "--with-odbc=#{Formula["unixodbc"].opt_prefix}" if build.with? "unixodbc"
+    if build.with? "unixodbc"
+      args << "--with-odbc=#{Formula["unixodbc"].opt_prefix}"
+    else
+      system "which", "odbc_config"
+      if $?.success?
+        odbc_config_inc = `odbc_config --include-prefix`
+        odbc_config_lib = `odbc_config --lib-prefix`
+        args << "--with-odbc"
+        args << "--with-odbc-include=#{odbc_config_inc}"
+        args << "--with-odbc=#{odbc_config_lib}"
+      end
+    end
 
     if build.with? "openldap"
       args << "--with-ldap"
